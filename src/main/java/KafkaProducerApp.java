@@ -6,7 +6,7 @@ import java.util.Properties;
 
 @Slf4j
 public class KafkaProducerApp {
-    private static final String topic = "my-topic";
+    private static final String topic = "test";
 
     public static void main(String[] args) {
         System.out.println("Starting the producer main application");
@@ -15,7 +15,7 @@ public class KafkaProducerApp {
         //bootstrap.servers: Producer uses this to determine the cluster membership, partitions, leaders etc. You dont have to specify all the servers, but it's best practice to specify more than one broker, incase if the specified broker is unavailable the producer will use the next one.
         //key.serializer: class used for message serialization. This is to optimize the size of the messages not only for network transmission, but for storage and even compression
         Properties props = new Properties();
-        props.put("bootstrap.servers", "localhost:9092,localhost:9093,localhost:9094");
+        props.put("bootstrap.servers", "localhost:9092,localhost:9093,localhost:9092");
         props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 
@@ -62,7 +62,9 @@ public class KafkaProducerApp {
                 //3) only once
                 //Use key if you want all the messages to go to a single partition
 //                ProducerRecord<String, String> message1 = new ProducerRecord<>(topic, "key", msg);
-                String msg = "Message " + counter;
+                //String json = "{  \\r\\n    \\\"employee\\\": {  \\r\\n        \\\"name\\\":       \\\"sonoo\\\",   \\r\\n        \\\"salary\\\":      56000,   \\r\\n        \\\"married\\\":    true  \\r\\n    }  \\r\\n}  ";
+                String json = "{  \n    \"employee\": {  \n        \"name\":       \"sonoo\",   \n        \"salary\":      56000,   \n        \"married\":    true  \n    }  \n} ";
+                String msg = "Message " + counter + " " + json;
                 ProducerRecord<String, String> message1 = new ProducerRecord<>(topic, msg);
 
                 producer.send(message1);

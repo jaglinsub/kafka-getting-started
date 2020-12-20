@@ -1,4 +1,4 @@
-import com.sun.tools.javac.util.List;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -10,13 +10,14 @@ import java.util.Properties;
 public class KafkaConsumerApp {
     private static final String DEMO_TOPIC_1 = "topic-1";
     private static final String DEMO_TOPIC_2 = "topic-2";
+    private static final String DEMO_TOPIC_3 = "test";
 
     public static void main(String[] args) {
         System.out.println("Starting the consumer main application");
 
         //Consumer configurations https://kafka.apache.org/documentation.html#consumerconfigs
         Properties props = new Properties();
-        props.put("bootstrap.servers", "localhost:9092,localhost:9093,localhost:9094");
+        props.put("bootstrap.servers", "localhost:9092,localhost:9093,localhost:9092");
         props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         props.put("enable.auto.commit", "true");
@@ -27,7 +28,7 @@ public class KafkaConsumerApp {
         //Subscribe call does is it pull messages from multiple topics and multiple partitions
         //Subscribe using regex: consumer.subscribe(List.of("demo-*"));
         try (KafkaConsumer consumer = new KafkaConsumer(props)) {
-            List<String> topics = List.of(DEMO_TOPIC_1, DEMO_TOPIC_2);
+            List<String> topics = List.of(DEMO_TOPIC_1, DEMO_TOPIC_2, DEMO_TOPIC_3);
             int timeoutMilliSecs = 10;
             consumer.subscribe(topics);
             while (true) {
